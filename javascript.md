@@ -80,6 +80,18 @@ Boolean()		(只有””,0,NaN,null,undefined为false，其他都为true)
   - 小括号>一元运算符（++，--，！）>算术运算符（先*/%后+-）>关系运算符>相等运算符>逻辑运算符（先&&再||）>赋值运算符>逗号
   - ![1629710890315](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1629710890315.png)
 
+
+
+二进制否运算符（~）
+
+js将所有的运算子都转成32位二进制整数再进行运算
+
+所有的位运算只对整数有效，当位运算遇到小数时只保留整数部分然后进行运算
+
+一个数与自身的取反值相加等于-1
+
+
+
 # 隐式转换
 
 -  复杂数据类型在隐式转换时会先转成String，然后再转成Number运算 (对象toString()结果为“[object Object]”)	//.valueOf.()toString()
@@ -256,7 +268,7 @@ indexOf('str')	返回字符在字符串中的索引，若字符为空，则返�
 1. clearTimeout（timer）
 2. clearInterval（timer）
 
- **定时器的返回值是一个整型的标识。**、
+ **定时器的返回值是一个整型的标识。**
 
 - 定时器的第三个参数为定时器回调函数的参数
 
@@ -313,7 +325,7 @@ arr instanceof Array（arr:实例对象，Array:构造函数）
 
 instanceof用于测试构造函数的 prototype 属性是否出现在对象实例原型链中的任何位置
 
-Constructor:arr.constructor == Array
+Constructor：arr.constructor == Array
 
 Object.prototype.toString.call() 返回一个形如 "[object xxx]"的字符串。
 
@@ -369,6 +381,8 @@ Object.values(obj)	获取对象所有的键对应的值
 
 Object.hasOwnProperty(obj,'attribute')判断对象中是否有某个属性，只会遍历当前对象属性不会判断原型中的属性。
 
+Object.getOwnPropertyNames(obj)返回一个指定对象的属性名组成的数组，包括不可枚举属性
+
 "x" in obj        in 关键字和hasOwnProperty不同就是 in 关键字会通过原型链一层层往上找直到找到该属性或者到原型链最顶端。
 
 
@@ -379,6 +393,41 @@ Object.hasOwnProperty(obj,'attribute')判断对象中是否有某个属性，只
 2、新对象的_proto_属性指向构造函数的prototype对象
 3、把构造函数的this指向新对象
 4、返回这个新对象
+
+如果构造函数内部有return语句，而且return后面跟着一个对象，new命令会返回return语句指定的对象；否则，就会不管return语句，返回this对象
+
+如果对普通函数（内部没有this关键字的函数）使用new命令，则会返回一个空对象。
+
+
+
+## 控制对象状态
+
+Object.preventExtensions：阻止为添加新的属性对象
+
+Object.seal：阻止为对象添加新的属性的同时页无法删除旧属性（不影响修改属性值）
+
+Object.freeze：阻止为一个对象添加新属性、删除旧属性、修改属性值
+
+
+
+## 实例对象
+
+new命令的作用，就是执行构造函数，返回一个实例对象。
+
+new命令会执行构造函数，因此后面的构造函数可以不加括号
+
+构造函数忘记加new时构造函数就变成了普通函数，并不会生成实例对象（解决方法：构造函数内部使用严格模式）
+
+函数内部可以使用new.target属性，倘若函数为new命令调用的则指向当前函数，否则为undefined
+
+
+
+## this注意事项
+
+1. 避免函数的多层嵌套
+2. 避免数组处理方法中的this
+
+
 
 
 
@@ -554,10 +603,10 @@ Object.defineProperty(obj, prop, descriptor)定义新属性或修改原有的属
 **obj**:要定义属性的对象。
 **prop**:要定义或修改的属性的名称或 Symbol 。
 **descriptor**:要定义或修改的属性描述符。（对象形式书写{}）
-	configurable：当前对象元素的属性描述符是否可改，是否可删除。默认为 false。
-	enumerable：当前对象元素是否可枚举。默认为 false。
+	configurable：当前对象元素的属性描述符是否可改，是否可删除。默认为 false。（为false时下列属性都不可以被修改）
+	enumerable：当前对象元素是否可枚举。默认为 false。(在他的父元素被遍历时不可被枚举)
 	value：该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。默认为 undefined。
-	writable：当且仅当该属性的 writable 键值为 true 时，属性的值，也就是上面的 value，才能被赋值运算符改变。默认为 false。
+	writable：当且仅当该属性的 writable 键值为 true 时， value才能被赋值运算符改变。默认为 false。
 	get：读取元素属性值时的操作
 	set：修改元素属性值时的操作
 
@@ -573,7 +622,7 @@ Object.defineProperty(obj, prop, descriptor)定义新属性或修改原有的属
 
 严格模式下全局作用域的this为undefined
 定时器的this还是指向window
-构造函数不加new调用，this会报错
+构造函数不加new调用，this会报错（因为this为undefined，不能往undefined添加属性）
 
 **严格模式的限制**
 
@@ -897,3 +946,61 @@ mCharts.setOption(option)
 
 defer：延迟脚本。立即下载，但延迟执行（延迟到整个页面都解析完毕后再运行），按照脚本出现的先后顺序执行。
 async：异步脚本。下载完立即执行，但不保证按照脚本出现的先后顺序执行。
+
+
+
+
+
+## navigator
+
+该属性指向一个包含浏览器和系统信息的 Navigator 对象。脚本通过这个属性了解用户的环境信息。
+
+##### 属性
+
+1. navigator.userAgent：返回用户的设备信息（浏览器的产商、版本、操作系统等）
+2. navigator.platform：返回用户的操作系统
+3. navigator.onLine：返回布尔值表示用户当前在线还是离线（浏览器短线）
+4. 用户变成在线触发online事件，变成离线触发offline事件
+5. navigator.connection：返回一个包含当前网络连接的相关信息
+
+
+
+## screen
+
+screen.orientation：返回一个对象，表示屏幕的方向,type表示具体方向
+
+1. landscape-primary：横放
+2. landscape--secondary：颠倒的横放
+3. portrait-primary：表示颠倒的横放
+4. portrait-secondary：表示颠倒的竖放
+
+
+
+# cookie
+
+1. Cookie 是服务器保存在浏览器的一小段文本信息，一般大小不能超过4KB。浏览器每次向服务器发出请求，就会自动附上这段信息。
+2. Cookie 的目的就是区分用户，以及放置状态信息
+3. 单个域名设置的cookie不应超过30个，每个cookie的大小不能超过4kb
+4. 区分cookie时不考虑协议和端口
+5. http回应可以包含 多个Set-Cookie字段，即在浏览器生成多个cookie
+6. 如果要修改设置过的cookie，则需要将cookie的key、domain、path、secure都要一致，否则会生成一个全新的cookie，下次访问时浏览器向服务器发送两个同名的cookie
+
+
+
+## 垃圾回收机制
+
+1. 标记清除
+
+   mark阶段将可达的数据进行标记
+
+   sweep阶段将没有标记到的数据进行回收
+
+   缺点：清理内存后内存是不连续的，导致内存碎片化严重，可能会导致大对象不能找到可利用空间的问题
+
+   这里所谓的清除并不是真的置空，而是把需要清除的对象地址保存在空闲的地址列表里。下次有新对象需要加载时，判断垃圾的位置空间是否够，如果够，就存放。
+
+2. 引用计数
+
+   标记每个变量呗引用的次数，为0时才释放这块内存。
+
+   当有一个值不再需要时，引用数却不为0，垃圾回收机制无法释放这块内存
