@@ -331,3 +331,35 @@ file.onchange(function(){
 **优劣对比**
 			使用createObjectURL可以节省性能并更快速，只不过需要在不使用的情况下手动释放内存
 			如果不太在意设备性能问题，并想获取图片的base64，则推荐使用FileReader.readAsDataURL
+
+
+
+
+
+## 预加载(<link>)
+
+preload:在浏览器渲染机制之前进行处理资源，而且不会阻塞onload事件，待到需要时自行调用（可加载跨域资源）
+
+preload设置as属性告诉浏览器加载的是什么资源，从而正确的发送accept头部信息，浏览器可以设置正确的资源加载优先级
+
+prefetch:浏览器在空闲时间提前请求资源并且缓存以供后续使用，页面跳转时prefetch请求不会中断（将其放入缓存至少五分钟）
+
+
+
+在preload或者prefetch的资源加载时，两者都存储在httpcache,当资源加载完成后，如果资源是可以被缓存的，那么其会在httpcache中等待后续操作，如果资源不可被缓存，那么其在被使用前均存储在memorycache
+
+
+
+## svg
+
+(rx ry x-axis-rotation large-arc-flag sweep-flag x y)+
+
+rx ry 是椭圆的两个半轴的长度。
+
+x-axis-rotation 是椭圆相对于坐标系的旋转角度，角度数而非弧度数。
+
+large-arc-flag 是标记绘制大弧(1)还是小弧(0)部分。
+
+sweep-flag 是标记向顺时针(1)还是逆时针(0)方向绘制。
+
+x y 是圆弧终点的坐标。
