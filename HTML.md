@@ -363,3 +363,9 @@ large-arc-flag 是标记绘制大弧(1)还是小弧(0)部分。
 sweep-flag 是标记向顺时针(1)还是逆时针(0)方向绘制。
 
 x y 是圆弧终点的坐标。
+
+1. stroke-dasharray：用于创造虚线，值依次是虚线的长度和虚线的间距
+2. stroke-dashoffset：相对与起始位置的偏移
+3. stroke：线的颜色
+4. stroke-width：线的宽度
+5. stroke-linecap：线的首尾形状
