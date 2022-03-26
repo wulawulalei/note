@@ -131,6 +131,39 @@ git diff
 作用：查看哪些更新没有暂存(加上--cashed为查看哪些更新暂存完没有提交到本地)
 
 
+git reset --head
+
+作用：将本地的commit回退到某个版本，本地的源码内容也会被回退
+
+
+git reset --soft
+
+作用：commit回退到某个版本，但是源码内容不变
+
+
+git cherry-pick commitHash
+
+作用：将其他分支的commit合并到另外一个分支
+
+
+git cherry-pick --continue
+
+作用：合并commit解决冲突后继续commit
+
+
+git cherry-pick --abort
+
+作用：放弃commit的合并
+
+
+git cherry-pick --quit
+
+作用：退出commit合并，但是回保留合并的commit
+
+
+git revert commitHash
+
+作用：回滚某一次commit
 
 
 
@@ -166,6 +199,22 @@ vim 文件的url	进入文本
   - q!	强制退出
   - wq  保存退出
   - set nu  设置行号
+
+
+
+commit命名规范：
+
+- feat：新增功能
+- fix：bug 修复
+- docs：文档更新
+- style：不影响程序逻辑的代码修改(修改空白字符，格式缩进，补全缺失的分号等，没有改变代码逻辑)
+- refactor：重构代码(既没有新增功能，也没有修复 bug)
+- perf：性能, 体验优化
+- test：新增测试用例或是更新现有测试
+- build：主要目的是修改项目构建系统(例如 glup，webpack，rollup 的配置等)的提交
+- ci：主要目的是修改项目继续集成流程(例如 Travis，Jenkins，GitLab CI，Circle等)的提交
+- chore：不属于以上类型的其他类，比如构建流程, 依赖管理
+- revert：回滚某个更早之前的提交
 
 
 

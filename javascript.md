@@ -435,6 +435,8 @@ new 构造函数名()；
 
 ## 对象方法
 
+object.create(obj)	创建obj对象的原型对象
+
 Object.keys(obj)	获取对象自身所有的键名 ，返回的是一个数组
 
 Object.values(obj)	获取对象所有的键对应的值,会过滤掉属性名为symbol值的属性
@@ -586,6 +588,40 @@ Function.prototype.mybind = function(context) {
 ```
 
 赋值操作等同于反向指向。
+
+
+
+# class
+
+1. es6的类，完全是构造函数的另外一种体现
+
+   ```
+   class Point {
+     // ...
+   }
+   
+   typeof Point // "function"
+   Point === Point.prototype.constructor // true
+   ```
+
+2. 类的所有方法都定义在类的prototype属性上面
+
+
+
+## constructor
+
+1. constructor是类的默认方法，在new命令生成对象实例时，自动调用该方法。
+2. 一个类必须要有constructor方法，倘若没有显式定义，则会自动添加一个空的constructor方法
+3. constructor方法默认返回实例对象（this），也可以自定义返回一个对象
+
+
+
+## 静态方法
+
+1. 静态方法不会被实例继承，而是直接通过类来调用
+2. 静态方法的this指向的是类，而不是实例
+3. 静态方法可以与非静态方法重名
+4. 父类的静态方法可以被子类继承
 
 
 
@@ -1077,6 +1113,23 @@ size属性：返回map对象中所包含的键值对的个数
 4.Set的值是唯一的可以做数组去重，Map由于没有格式限制，可以做数据存储
 
 5.map和set都是stl中的关联容器，map以键值对的形式存储，key=value组成pair，是一组映射关系。set只有值，可以认为只有一个数据，并且set中元素不可以重复且自动排序。
+
+
+
+## symbol
+
+1. Symbol函数前不能使用new命令，因为生成的Symbol是一个原始类型的值，不是对象
+2. 如果Symbol的参数是一个对象，就会调用该对象的toString方法，将其转成字符串，然后才生成一个Symbol值
+3. Symbol函数的参数只是表示对当前Symbol值的描述，因此相同参数的Symbol函数的返回值是不相等的
+4. Symbol值不能与其他类型的值进行运算，但只可显式转为字符串和布尔值
+5. Symbol值作为属性名时，不能使用点运算符，因为点运算符后面跟着的时字符串
+6. 由于Symbol值作为属性名，不能被常规的方法遍历得到，所以可以给对象定义一些内部方法和属性
+
+
+
+属性:
+
+1. description	返回Symbol的描述
 
 
 
