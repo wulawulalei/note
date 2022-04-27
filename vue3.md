@@ -1850,3 +1850,15 @@ h('img', { attrs: { src: require('./image.png') }})
 1. 静态资源：可以理解为前端的固定页面，这里面包含HTML、CSS、JS、图片等等，不需要查数据库也不需要程序处理，直接就能够显示的页面，如果想修改内容则必须修改页面，但是访问效率相当高。
 2. 动态资源：需要程序处理或者从数据库中读数据，能够根据不同的条件在页面显示不同的数据，内容更新不需要修改页面但是访问速度不及静态页面。
    
+
+vue.extend返回的是组件的实例
+
+
+
+## transition
+
+![image-20220426095100680](C:\Users\hz\AppData\Roaming\Typora\typora-user-images\image-20220426095100680.png)
+
+ active 会伴随 enter/leave 的整个过程
+
+- name：用于自动生成css过渡类名

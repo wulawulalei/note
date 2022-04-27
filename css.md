@@ -330,6 +330,10 @@ vertical-align:bottom 把元素的底端与行中最高元素的底端对齐
 
 
 
+- 图片在div中底部会有空白：因为图片默认的vertical-align为baseline，所以会有空白
+
+
+
 ## 单行文本溢出省略号显示
 
 ```
