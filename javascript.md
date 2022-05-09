@@ -236,7 +236,7 @@ Source Array (src) (源数组)
 
 **slice(start,end)**	从start位置开始，截取到end位置，end取不到
 
-**1(start,end)**	从start位置开始，截取到end位置，end取不到,不接受负值
+**substring(start,end)**	从start位置开始，截取到end位置，end取不到,不接受负值
 
 **replace(被替换字符，替换字符)**	替换字符，只替换第一个
 
@@ -708,6 +708,8 @@ for循序的执行顺序：设置循环变量(var i = 0) ==》循环判断(i<3) 
 ```
 
 for(var i in arr)	遍历数组arr，i为键名
+
+for in会遍历数组所有的可枚举的属性，包括原型的属性。
 
 for(var i of arr)	遍历数组arr，i为键值
 

@@ -369,3 +369,10 @@ x y 是圆弧终点的坐标。
 3. stroke：线的颜色
 4. stroke-width：线的宽度
 5. stroke-linecap：线的首尾形状
+
+
+
+## 标签
+
+1. mark：将包裹的文本高亮展示
+2. sup、sub：上标和下标
