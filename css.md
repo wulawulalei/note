@@ -89,6 +89,8 @@ A~B:查找A后B的所有节点
 
 背景色渐变:background: -webkit-linear-gradient(起始位置 ,起始颜色,终止颜色);
 
+渐变色在CSS中被定义成了 image 类型，因此在background-color和color中使用无效，
+
 倒影：-webkit-box-reflect：direction offset color
 above：指定倒影在对象的上边
 below：指定倒影在对象的下边

@@ -10,7 +10,7 @@
 
 
 
-**isNaN()** 判断非数字，是非数字返回false，否则返回true。
+**isNaN()** 判断非数字，是非数字返回true，否则返回false。
 
 只要有字符串类型和其他类型拼接，最终结果还是字符串型。
 
@@ -50,7 +50,89 @@ NaN表示的是非数字, 但是这个非数字也是不同的；因此 NaN 不�
 
 ## 变量转为字符型
 
-变量.toString()	/	String(变量)	/	变量+””
+1. toString()
+2. String(变量)
+3. 变量+””
+4. JSON.stringify()
+
+之间的区别为：
+
+- string是js的全局对象，可以把null，undefined转换成字符
+- toString不能转换null，undefined，而且会报错
+- JSON.stringify遇到值为undefined、function、symbol会自动忽略该属性，在数组则返回null
+
+
+
+JSON.stringify原理：
+
+1. 如果目标对象有toJSON()方法，则会执行该方法并返回该方法返回的结果
+
+   ```
+       const obj = {
+         name:'sdfsd',
+         age:undefined,
+         toJSON:function(){
+           console.log('hahaha')
+           return 'hahaha'
+         }
+       }
+       console.log(JSON.stringify(obj))
+       --------------------------------
+       'hahaha'
+   ```
+
+2. Boolean、Number、String对象在字符串化过程中会转换成对应的原始值
+
+   ```
+       const obj = {
+         name: new String('hahaha'),
+         age: new Number(18),
+         isBoy: new Boolean(false)
+       }
+       console.log(JSON.stringify(obj))
+       --------------------------------------
+       {"name":"hahaha","age":18,"isBoy":false}
+   ```
+
+3. undefined、function、symbol不是有效的JSON值，如果在转换的过程中遇到此类值，则会被忽略
+
+   ```
+       const obj = {
+         name:'sdfsd',
+         age:undefined
+       }
+       console.log(JSON.stringify(obj))
+       --------------------------------
+       {"name":"sdfsd"}
+   ```
+
+4. 所有的symbol-key都会被忽略
+
+   ```
+       var obj = {}
+       obj[Symbol('name')] = 'hhh'
+       obj[Symbol('age')] = '18'
+       console.log(obj)
+       console.log(JSON.stringify(obj))
+       ---------------------------------
+       {Symbol(name): 'hhh', Symbol(age): '18'}
+       {}
+   ```
+
+5. 数字 Infinity 和 NaN 以及 null 值都被认为是 null
+
+   ```
+       let obj = {
+         x:Infinity,
+         y:null,
+         z:NaN
+       }
+       console.log(JSON.stringify(obj))
+       ------------------------------------
+       {"x":null,"y":null,"z":null}
+   ```
+
+6. 所有其他 Object 实例（包括 Map、Set、WeakMap 和 WeakSet）将仅序列化其可枚举的属性
 
 
 
@@ -60,8 +142,7 @@ NaN表示的是非数字, 但是这个非数字也是不同的；因此 NaN 不�
 
 **parseInt(String)**转为**整数**	**parseFloat(String)**转为**浮点数**	(后面跟有字符则去掉字符)
 parseInt方法接收两个参数
-parseInt的第一个参数radix为0时，ECMAScript5将string作为十进制数字的字符串解析；
-parseInt的第二个参数radix在2—36之间时，如果string参数的第一个字符（除空白以外），不属于radix指定进制下的字符，解析结果为NaN。
+parseInt的第二个参数radix在(2，36)之间时，如果string参数的第一个字符（除空白以外），不属于radix指定进制下的字符，解析结果为NaN，当radix为0时，ECMAScript5将string作为十进制数字的字符串解析。
 
 Number.EPSILON：是JavaScript表示的最小精度
 
@@ -72,6 +153,8 @@ Number.isinteger：判断一个属是否为整数
 Math.trunc：将数字的小数部分去除
 
 Math.sign：判断一个数是正数、负数还是0（1，0，-1）
+
+js中数字的最大值：2^53
 
 
 
@@ -108,11 +191,35 @@ js将所有的运算子都转成32位二进制整数再进行运算
 -  复杂数据类型在隐式转换时会先转成String，然后再转成Number运算 (对象toString()结果为“[object Object]”)	//.valueOf.()toString()
 - 字符串连接符+：会把其他数据类型调用String()方法转成字符串然后拼接
 - 算术运算符+：会把其他数据类型调用Number()方法转成数字然后做加法运算
--  关系运算符：会把其他数据类型转换成number之后再比较关系 
-  - 当关系运算符两边有一边是字符串的时候，会将其他数据类型使用Number()转换，然后比较关系！，十位数或者以上只返回第一个字符的编码。
+-  关系运算符（<、>、<=、>=）：会把其他数据类型转换成number之后再比较关系 
+  - 当关系运算符两边有一边是数值的时候，会将其他数据类型使用Number()转换，然后比较关系。
   - 当关系运算符两边都是字符串的时候，从左到右一个一个字符进行比较。
--  逻辑非运算符：会把其他数据类型调用Boolean()方法转成boolean类型
+  - 如果一个操作值是对象，则调用valueof方法（没有valueof的话则用toString方法），再进行比较
+  - 如果一个操作值是布尔值，则将其转换为数值，再进行比较
+-  逻辑运算符（!、&&、||）：会把其他数据类型调用Boolean()方法转成boolean类型
+-  乘除、减号、取模运算符（*、/、-、%）：如果操作符之一不是数值，则会被隐式调用Number()函数进行转换
+-  相等运算符：类似于关系运算符
 - 引用类型数据存在堆中，栈中存储的是地址。
+
+
+
+加法运算：
+
+```mermaid
+graph LR;
+		B(d)-->C[是否都为原始值]
+		C-->|是|D[原始值]
+		C-->|否|E[对象]
+		D[原始值]-->|是字符串|F[字符串相加]
+		D[原始值]-->|不是字符串|G[字符串相加]
+		E[对象]-->|valueof|H[s]
+		H[s]-->|toString|I[s]
+		H[s]-->|为原始值|C[是否都为原始值]
+		I[s]-->|不为原始值|J[报错]
+		I[s]-->|为原始值|C[是否都为原始值]
+```
+
+
 
 
 
@@ -148,6 +255,12 @@ js将所有的运算子都转成32位二进制整数再进行运算
 # 三元表达式
 
 条件表达式？表达式1：表达式2
+
+
+
+## 单选框多选框
+
+单选框多选框如果不修改value值，则他们获取的value值永远都是on，因为input标签没有设置value属性的值，默认的值就是on。
 
 
 
@@ -236,7 +349,13 @@ Source Array (src) (源数组)
 
 **slice(start,end)**	从start位置开始，截取到end位置，end取不到
 
-**substring(start,end)**	从start位置开始，截取到end位置，end取不到,不接受负值
+**substring(start,end)**	从start位置开始，截取到end位置，end取不到,不接受负值(若有负值则替换成0)
+
+
+
+> slice和substring区别：当接收的参数是负数时，slice会将它字符串的长度与对应的负数相加，结果作为参数；substring则干脆将负参数都直接转换为0
+
+
 
 **replace(被替换字符，替换字符)**	替换字符，只替换第一个
 
@@ -278,9 +397,11 @@ Source Array (src) (源数组)
 
 **endsWith(‘str’)**	表示参数字符串是否在原字符串的尾部，返回布尔值
 
-**repeat(n)**		将原字符串重复n次，返回一个新字符串	
+**repeat**(n)		将原字符串重复n次，返回一个新字符串	
 
-indexOf('str')	返回字符在字符串中的索引，若字符为空，则返回0
+**indexOf('str')**	返回字符在字符串中的索引，若字符为空，则返回0
+
+**padStart(length,str)**  将指定字符填充到字符串头部，返回新字符串
 
 
 
@@ -303,6 +424,11 @@ indexOf('str')	返回字符在字符串中的索引，若字符为空，则返�
   ```
 
   
+
+## switch
+
+就是当条件成立了一个后，如果没有break
+就会忽略后面的条件case ，把所有的语句都执行了
 
 
 
@@ -332,6 +458,10 @@ indexOf('str')	返回字符在字符串中的索引，若字符为空，则返�
 
 - 定时器的第三个参数为定时器回调函数的参数
 
+
+
+W3C在HTML标准中规定，规定要求setTimeout中低于4ms的时间间隔算为4ms。
+
  
 
 # arguments
@@ -339,13 +469,17 @@ indexOf('str')	返回字符在字符串中的索引，若字符为空，则返�
 不确定形参的个数时用arguments来获取。
 arguments是伪数组，有length属性，有索引，但没有push、pop等方法。
 
+参数变量和 arguments 是双向绑定的
+
 
 
 # 作用域
 
 js引擎运行js分为两步：预解析、代码执行。
-预解析：js引擎把js里面所有的var和function提升到当前作用域的最前面
+预解析：js引擎把js里面所有的var和function提升到当前作用域的最前面（函数的提升快于变量的提升）
 变量的提升：不提升赋值操作，函数的提升：提升函数内容不调用函数。
+
+函数作用域在函数定义时确认，并且只能获取当前作用域内的变量
 
 1.全局作用域
 
@@ -420,6 +554,8 @@ new 构造函数名()；
 
 在对象中，属性名永远都是字符串。如果使用非字符串（string）的其他值作为属性名，都会转化成string类型，即使数字也不例外。 
 
+点运算符会被优先识别为数字常量的一部分，然后才是对象属性访问符。
+
 []操作符可以用变量来访问属性名，点操作符不能
 
 []操作符能用数值访问属性，点操作符不能。
@@ -435,7 +571,7 @@ new 构造函数名()；
 
 ## 对象方法
 
-object.create(obj)	创建obj对象的原型对象
+object.create(obj)	创建obj对象的原型对象，使用现有的对象来提供新创建的对象的__proto
 
 Object.keys(obj)	获取对象自身所有的键名 ，返回的是一个数组
 
@@ -717,7 +853,9 @@ for(var i of arr)	遍历数组arr，i为键值
 forEach方法中的function回调有三个参数：第一个参数是遍历的数组内容，第二个参数是对应的数组索引，第三个参数是数组本身。
 
 filter(function(value,index,arr/){})		查找满足条件的元素并返回数组
-some(function(value,index,arr/){})		查找满足条件的元素是否存在并返回布尔值
+some(function(value,index,arr/){})		查找满足条件的元素是否存在并返回布尔值，如果该函数对任意一项返回true,则返回true
+
+every(function(value,index,arr/){})		查找满足条件的元素是否存在并返回布尔值，如果该函数对每一项都返回true，则返回true
 
 
 
@@ -782,6 +920,12 @@ object.assign方法的第一个参数是目标对象，后面的参数都是源�
 ```
 Object.assign(obj1,obj2)	obj2合并并将obj1覆盖
 ```
+
+
+
+## 深拷贝
+
+1. 使用JSON.parse(JSON.stringify(obj))将对象序列化后又反序列化
 
 
 

@@ -120,9 +120,9 @@ git stash pop
 
 
 
-git merge “分支名字”
+git merge “branch-name”
 
-作用：合并分支
+作用：j将branch-name分支合并到当前分支
 
 
 
