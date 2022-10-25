@@ -94,7 +94,7 @@ JSON.stringify原理：
        {"name":"hahaha","age":18,"isBoy":false}
    ```
 
-3. undefined、function、symbol不是有效的JSON值，如果在转换的过程中遇到此类值，则会被忽略
+3. undefined、function不是有效的JSON值，如果在转换的过程中遇到此类值，则会被忽略
 
    ```
        const obj = {
@@ -133,6 +133,8 @@ JSON.stringify原理：
    ```
 
 6. 所有其他 Object 实例（包括 Map、Set、WeakMap 和 WeakSet）将仅序列化其可枚举的属性
+
+7. 时间类型序列化之后变成字符串
 
 
 
@@ -644,6 +646,8 @@ new命令会执行构造函数，因此后面的构造函数可以不加括号
 
 函数内部可以使用new.target属性，倘若函数为new命令调用的则指向当前函数，否则为undefined
 
+当构造函数return了新的数据且在实例化构造函数时，返回非对象类型将不生效
+
 
 
 ## this注意事项
@@ -676,6 +680,9 @@ new命令会执行构造函数，因此后面的构造函数可以不加括号
 # 改变this
 
 使用call()方法，就会改变this的指向，call的作用就是把obj1的方法放到obj2上使用。
+
+call里面的参数依次为待被指向的对象，调用函数的参数
+
 call()还能实现继承				Function son(a,b,c){Father.call(this,a,b,c)}
 
 ```
@@ -859,6 +866,36 @@ every(function(value,index,arr/){})		查找满足条件的元素是否存在并�
 
 
 
+
+
+中断具体的循环：使用标签来标识循环，然后使用break或者continue语句来中断后者继续执行具体的循环
+
+```
+let i, j;
+
+loop1:
+for (i = 0; i < 3; i++) {      //The first for statement is labeled "loop1"
+  loop2:
+  for (j = 0; j < 3; j++) {   //The second for statement is labeled "loop2"
+    if (i === 1 && j === 1) {
+      continue loop1;
+    }
+    console.log(`i = ${i}, j = ${j}`);
+  }
+}
+
+// Output is:
+//   "i = 0, j = 0"
+//   "i = 0, j = 1"
+//   "i = 0, j = 2"
+//   "i = 1, j = 0"
+//   "i = 2, j = 0"
+//   "i = 2, j = 1"
+//   "i = 2, j = 2"
+```
+
+
+
 # Object.defineProperty
 
 Object.defineProperty(obj, prop, descriptor)定义新属性或修改原有的属性
@@ -978,7 +1015,11 @@ Promise.race([p1, p2]).then((result) => {
 async 是一个修饰符，async 定义的函数会默认的返回一个Promise对象，因此对async函数可以直接进行then操作,返回的值即为then方法的传入函数 
 
 await关键字只能放在async函数内部，await关键字的作用就是获取 Promise中返回的内容，获取的是Promise函数中resolve或者reject的值
-如果await 后面并不是一个Promise的返回值，则会按照同步程序返回值处理 
+如果await 后面并不是一个Promise的返回值，则会按照同步程序返回值处理 ，直接返回对应的值
+
+await后面的代码会相当于promisr.then，只是因为await会阻塞作用域内后面的代码，等到外部的同步代码执行完后再回到async内部继续执行await后面的代码
+
+await前有没有加 return 的效果都是一样的
 
 
 
@@ -996,6 +1037,10 @@ var name=/表达式/
 1. 第一个参数是字符串，第二个参数表示正则表达式的修饰符
 2. 第一个参数是正则表达式，会返回原有正则表达式
 3. 第一个参数是正则对象，第二个参数会替代原有正则表达式的修饰符
+
+
+
+正则表达式，要么匹配字符，要么匹配位置
 
 
 
@@ -1034,6 +1079,8 @@ x(?!y)	 仅仅当'x'后面不跟着'y'时匹配'x'，这被称为正向否定查
 \S	匹配非空格的字符，相当于[^\t\r\n\v\f]
 
 \b	匹配有单词边界的字符
+
+\B    匹配非单词边界的字符
 
 dotall:  用s表示dotAll，以使.可以匹配任意字符
 
@@ -1096,6 +1143,7 @@ var有预解析，变量提升；只有函数才会限定作用域
 - 使用let关键字声明的变量具有块级作用域，没有变量提升，具有暂时性死区，不可以重定义但可以重新赋值变量
 - 使用const关键字声明的变量具有块级作用域，声明常量时必须赋值，赋值后值不能改。（不能改变其内存地址）常量	可以在他的基础上添加或者删除
 - ES6允许从数组中提取值，按照对应位置，对变量赋值。
+- 使用var或者function会创建全局对象属性，也就是（window.a）
 - es6允许块级作用域的任意嵌套
 
 ```
@@ -1113,6 +1161,19 @@ var有预解析，变量提升；只有函数才会限定作用域
 2. var声明的变量会发生变量提升，let和const不会
 3. var可以在一个范围内重新声明
 4. 用var声明的变量是函数作用域的，let和const声明的变量是块级作用域
+
+
+
+## 函数
+
+函数的声明方式
+
+1. 声明式定义函数：function a (){console.log(_)}
+2. 函数赋值表达式定义函数：var a = function(){console.log(_)}
+
+
+
+用括号包裹定义函数体，解析器将会以函数表达式的方式去调用定义函数，也就是将函数变成一个函数表达式的做法，使解析器正确的调用定义函数。（在函数前加一个!亦是如此）
 
 
 
@@ -1221,11 +1282,13 @@ var a={name:haha,age:18} var b={sex:’女’} var c={...a,...b}  (name:haha,age
 
 set认为NaN和NaN是相等的
 
+set判断两个值是否相同使用的是类似于（===）
+
 
 
 ## Map数据结构
 
-map对象保存键值对，任何值都可以作为一个健或者一个值，构造函数可以接受一个数组作为参数
+map对象保存键值对，任何值都可以作为一个键或者一个值，构造函数可以接受一个数组作为参数
 
 size属性：返回map对象中所包含的键值对的个数
 
@@ -1333,6 +1396,12 @@ btn.onclick=function（）{
     }
 }
 ```
+
+
+
+## requestAnimationFrame
+
+该方法可以在下一帧开始时调用指定函数，将所有DOM操作集中起来，在一次重绘或者回流中完成，并且重绘或者回流的时间间隔紧紧跟随着浏览器的刷新频率。
 
 
 

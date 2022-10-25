@@ -248,8 +248,10 @@ inset表示向内部的阴影模糊度
 
 ## 定位(position)			
 
-z-index 属性设置元素的堆叠顺序。Z-index 仅能在定位元素上奏
+z-index 属性设置元素的堆叠顺序。Z-index 仅能在定位元素上生效，除了静态定位(static)
 静态定位(static)：类似于标准流
+
+层叠等级：层叠上下文根元素<定位并且z-index:<0<块级元素<浮动元素<定位并且z-index:auto/0<定位并且z-index:>>0
 
 
 

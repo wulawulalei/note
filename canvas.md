@@ -124,6 +124,8 @@ quadraticCurveTo(cp1x, cp1y, x, y)，绘制二次贝塞尔曲线，cp1x,cp1y为�
 bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)，绘制三次贝塞尔曲线，cp1x,cp1y为控制点一，cp2x,cp2y为控制点二，x,y为结束点。起始点为moveto时指定的点。
 
 drawImage(img,startX,startY,endX,endY)绘制图片
+
+getImageData（startX,startY,width,height）获取像素点数据
 ```
 
 
@@ -147,3 +149,22 @@ drawImage(img,startX,startY,endX,endY)绘制图片
 
 - save() 是 Canvas 2D API 通过将当前状态放入栈中，保存 canvas 全部状态的方法
 - restore() 是 Canvas 2D API 通过在绘图状态栈中弹出顶端的状态，用顶端的状态将当前的状态覆盖
+
+
+
+
+
+
+
+
+
+# echarts
+
+- 鼠标经过的样式：emphasis
+- 坐标轴：axisLine
+- 坐标轴刻度：axisTick
+- echarts图标的位置和大小：grid
+- 调色盘：color
+- 鼠标经过后的提示：tooltip
+- 图标的标题：title
+- 图标的颜色解析：legend

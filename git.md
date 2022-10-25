@@ -58,11 +58,16 @@ git log
 
 作用：可以帮助我们查看提交日志
 
-git 1og //查看日志
-
-git 1og--oneline://查看简洁日志，会在地行显示日志信息
+git log--oneline://查看简洁日志，会在地行显示日志信息
 
 git reflog//获取所有操作的日志，包含回退的版本号
+
+
+
+> git log和git reflog的区别为
+
+1. git log命令是显示当前的`HEAD`和它的祖先
+2. git reflog可查看到所有历史版本信息
 
  
 
@@ -131,39 +136,67 @@ git diff
 作用：查看哪些更新没有暂存(加上--cashed为查看哪些更新暂存完没有提交到本地)
 
 
-git reset --head
 
-作用：将本地的commit回退到某个版本，本地的源码内容也会被回退
+
+git reset --hard
+
+作用：彻底回退到某个版本，本地的源码也会变为具体版本的内容，撤销的commit中所包含的更改被冲掉
 
 
 git reset --soft
 
-作用：commit回退到某个版本，但是源码内容不变
+作用：回退到某一个版本，只回退了commit信息，源码内容不变
+
+git reset HEAD .撤销已经add的文件
+
+
+
+
 
 
 git cherry-pick commitHash
 
-作用：将其他分支的commit合并到另外一个分支
+作用：将其他分支的commit合并到另外一个分支，也就是在当前分支末尾增加了此commit
+
+1. 合并一两个commit
+
+   ```
+   git cherry-pick <HashA> <HashB>
+   ```
+
+2. 合并A和B两个commit之间的提交(不包含A提交，要包含A提交则要在A后加上^)
+
+   ```
+   git cherry-pick A..B
+   ```
+
+
 
 
 git cherry-pick --continue
 
-作用：合并commit解决冲突后继续commit
+作用：用户解决代码冲突后，第一步将修改的文件重新加入暂存区（`git add .`），第二步使用下面的命令，让 Cherry pick 过程继续执行。
 
 
 git cherry-pick --abort
 
-作用：放弃commit的合并
+作用：发生代码冲突后，放弃合并，回到操作前的样子。
 
 
 git cherry-pick --quit
 
-作用：退出commit合并，但是回保留合并的commit
+作用：发生代码冲突后，退出 Cherry pick，但是不回到操作前的样子。
 
 
 git revert commitHash
 
 作用：回滚某一次commit
+
+
+
+git rebase master
+
+作用：执行操作时，会先找到两个分支的共同祖先，然后提取当前分支上的修改，并将当前分支指向master分支的最新提交，最后将刚才提取的修改应用到master分支最新提交的后面（这个过程会删除原来当前分支的修改，生成新的修改，也就是删除原来的C、D，生成新的C、D）
 
 
 
@@ -221,3 +254,32 @@ commit命名规范：
 
 
 git中一个文件对应一个git对象
+
+
+
+
+
+### commit
+
+- 当commit后发现有内容忘记add的时候，可以把忘记的内容先add了再使用amend合并到上一个commit.
+
+```
+git commit --amend --no-edit
+```
+
+- 当commit后发现commit信息要修改时，使用amend进入到修改信息，键入:i可进行编辑，键入:wq保存并退出
+
+```
+git commit --amend
+```
+
+
+
+### checkout
+
+- 当文件放进暂存区后，不小心改到放进暂存区的文件时，则可以使用checkout将工作区的指定文件的内容恢复到暂存区的状态
+
+```
+git checkout filename
+```
+
