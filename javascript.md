@@ -147,6 +147,8 @@ JSON.stringify原理：
 parseInt方法接收两个参数
 parseInt的第二个参数radix在(2，36)之间时，如果string参数的第一个字符（除空白以外），不属于radix指定进制下的字符，解析结果为NaN，当radix为0时，ECMAScript5将string作为十进制数字的字符串解析。
 
+parseInt会将那些会自动转换为科学计数法的数字视为字符串，读到e的时候就不能解析了	(parseInt(0.000005)    //5(5*10-6) )
+
 Number.EPSILON：是JavaScript表示的最小精度
 
 Number.isfinite：检测一个数值是否为有限数
@@ -163,7 +165,7 @@ js中数字的最大值：2^53
 
 ## 变量转为布尔型
 
-Boolean()		(只有””,0,NaN,null,undefined为false，其他都为true)
+Boolean()		(只有””,0,NaN,null,undefined为false，其他都为true， ’0‘为true)
 
 
 
@@ -186,6 +188,14 @@ js将所有的运算子都转成32位二进制整数再进行运算
 所有的位运算只对整数有效，当位运算遇到小数时只保留整数部分然后进行运算
 
 一个数与自身的取反值相加等于-1
+
+
+
+空值合并运算符（？？）
+
+```
+result = (a !== null && a !== undefined) ? a : b;
+```
 
 
 
@@ -240,6 +250,8 @@ graph LR;
 - 只有下一行的开始与本行的结尾无法一起解释，Javascript引擎才会自动添加分号
 - 如果一行的起首是自增后者自减运算符，则它们的前面会自动添加分号
 - 如果continue、break、return和throw这四个语句后面，直接跟换行符，则会自动添加分号。
+
+立即执行函数前面加上!的原因：将执行!后面的代码，避免上一句表达式没加分号引来的问题
 
 
 
@@ -1287,6 +1299,10 @@ var a={name:haha,age:18} var b={sex:’女’} var c={...a,...b}  (name:haha,age
 - null和undefined无法转成对象，因此无法对他们进行解构赋值
 - 解构赋值时等号右边为数值或者布尔值，则会先转为对象
 
+```
+({ name: people.name, age: people.age} = result);
+```
+
 
 
 # Set数据结构
@@ -1496,6 +1512,14 @@ screen.orientation：返回一个对象，表示屏幕的方向,type表示具体
 
 
 
+## export和export default同时存在
+
+同时存在的话，引入的时候 export加{}，而export default可定义为随便一个名称
+
+export default在同一个文件中只可存在一个
+
+
+
 ## 垃圾回收机制
 
 1. 标记清除
@@ -1513,3 +1537,10 @@ screen.orientation：返回一个对象，表示屏幕的方向,type表示具体
    标记每个变量呗引用的次数，为0时才释放这块内存。
 
    当有一个值不再需要时，引用数却不为0，垃圾回收机制无法释放这块内存
+
+
+
+## audio
+
+volume：设置并返回音频的音量（0 - 1）
+

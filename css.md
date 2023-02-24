@@ -520,3 +520,28 @@ animation-fill-mode:动画结束后，保持位置不变(forwards),回到起始�
 ## GPU加速
 
 css中一下几个属性能触发硬件加速：transform、opacity、filter、will-change
+
+
+
+## window.print
+
+- 此方法打印的是body的内容
+- 如果需要加上背景色或者背景图，则需要加上
+
+```
+-webkit-print-color-adjust:exact;
+-moz-print-color-adjust:exact;
+-ms-print-color-adjust:exact;
+print-color-adjust:exact;
+```
+
+倘若还不生效，则需要在背景色或者背景图的样式中加上!important
+
+
+
+## 设置宽高比
+
+```
+aspect-ratio: 1 / 1;（宽 / 高）
+```
+

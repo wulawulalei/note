@@ -127,7 +127,7 @@ git stash pop
 
 git merge “branch-name”
 
-作用：j将branch-name分支合并到当前分支
+作用：将branch-name分支合并到当前分支
 
 
 
@@ -190,7 +190,7 @@ git cherry-pick --quit
 
 git revert commitHash
 
-作用：回滚某一次commit
+作用：回滚某一次commit，但是此次操作之前和之后的commit都会被保留，并且把这一次撤销，作为一次最新的提交。
 
 
 
@@ -273,6 +273,12 @@ git commit --amend --no-edit
 git commit --amend
 ```
 
+也可以一次性去修改commit文本
+
+```
+git commit --amend --only -m "新的commit文本"
+```
+
 
 
 ### checkout
@@ -283,3 +289,28 @@ git commit --amend
 git checkout filename
 ```
 
+
+
+
+
+git remote -v 作用是显示所有远程仓库
+
+git remote get-url origin 获取远程仓库url
+
+git remote set-url origin __  设置远程仓库url
+
+
+
+## 获取ssh
+
+```
+git config --global user.name "自定义用户名"
+git config --global user.email "邮箱"
+ssh-keygen -t rsa -C "邮箱"
+```
+
+
+
+## 查看配置信息
+
+git config --list

@@ -1862,3 +1862,15 @@ vue.extend返回的是组件的实例
  active 会伴随 enter/leave 的整个过程
 
 - name：用于自动生成css过渡类名
+
+
+
+
+
+
+
+## vue.use
+
+1. 至少传递一个参数，该参数可以是object或者function，如果是object的话则需要在这个object中定义一个install方法，如果是function的话则当作install方法
+2. 执行Vue.use时会默认执行install方法，install第一个参数是Vue，其他则是vue.use中的其他方法
+
