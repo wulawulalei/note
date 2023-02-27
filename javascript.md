@@ -1209,6 +1209,7 @@ let、const声明的变量会提升到块的顶部
 3. 如果直接返回一个对象，必须在对象外面加上括号
 4. 若形参只有一个，形参外侧的小括号可以去掉
 5. 箭头函数不绑定this，箭头函数中的this指向定义时所处的对象
+6.  箭头函数中的this只在定义的时候绑定，任何方法都改不了箭头函数的this，包括(call、bind、apply)
 
 
 
@@ -1543,4 +1544,17 @@ export default在同一个文件中只可存在一个
 ## audio
 
 volume：设置并返回音频的音量（0 - 1）
+
+
+
+## MutationObserver
+
+功能：监听DOM的变化
+
+```
+const observer = new MutationObserver(callback);
+const options = {}
+const a = document.querySelector('#app')
+observer.observer(a, options)
+```
 

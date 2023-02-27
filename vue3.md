@@ -1874,3 +1874,35 @@ vue.extend返回的是组件的实例
 1. 至少传递一个参数，该参数可以是object或者function，如果是object的话则需要在这个object中定义一个install方法，如果是function的话则当作install方法
 2. 执行Vue.use时会默认执行install方法，install第一个参数是Vue，其他则是vue.use中的其他方法
 
+
+
+## vue.mixin
+
+将mixin的内容合并到this.options中
+
+
+
+## vue.extend
+
+1. vue.extend获得是一个构造函数，可以通过实例化生成一个vue实例
+2. 实例化时可以向这个实例传入参数，但是`需要注意`的是 props 的值需要通过 propsData 属性来传递
+3. 得到 Vue 实例后，我们需要通过一个目标元素来挂载它，有人首先会想到挂载到 `#app` 上，这个挂载的过程是将`目标元素的内容全部替换`，所以一旦挂载到 `#app` 上，该元素的所有子元素都会消失被替换
+4. 针对第3点，所以创建了一个 div 元素插入到 body 中，我们将想要挂载的内容替换到这个div上
+
+
+
+## vue.component
+
+参数：组件id，组件构造函数
+
+当没有传构造函数时，默认是已经全局注册过的，则直接返回this.options.components[id]
+
+当有传构造函数时，要先判断传递的是否为对象，为对象的话还需要使用vue.extend进行转换成构造函数
+
+
+
+## vue.extend和vue.component区别
+
+1. Vue.component component两者都是需要先进行组件注册后，然后在 template 中使用注册的标签名来实现组件的使用。Vue.extend 则是编程式的写法
+2. 关于组件的显示与否，需要在父组件中传入一个状态来控制 或者 在组件外部用 v-if/v-show 来实现控制，而 Vue.extend 的显示与否是`手动`的去做组件的`挂载和销毁`。
+3. Vue.component component 在组件中需要使用 slot 等自定义UI时更加灵活，而 Vue.extend 由于没有 template的使用，没有slot 都是通过 props 来控制UI，更加局限一些。
