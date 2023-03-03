@@ -1558,3 +1558,29 @@ const a = document.querySelector('#app')
 observer.observer(a, options)
 ```
 
+
+
+## width（都是只读属性）
+
+1. offsetWidth：包含元素可见宽度，padding，border（包含滚动条）
+2. clientWidth：包含元素可见宽度，padding（不包含滚动条）
+3. scrollWidth：元素内容高度，包括由于溢出导致视图中不可见的内容，padding（不包括滚动条）
+4. offsetWidth、clientWidth、scrollWidth属性值会被四舍五入为一个整数，如果需要小数值的话，可使用element.getBoundingClientRect()
+5. window.innerWidth：窗口的文档显示区的宽度
+6. window.outerWidth：窗口的外部宽度，包含工具条，F12
+
+
+
+## getBoundingClientRect
+
+返回一个DOMRect对象，如下：（根据视口左上角来计算的（0，0））
+
+```
+top: 元素上边距离视口上边的距离
+left: 元素右边距离视口左边的距离
+right: 元素右边距离视口左边的距离
+bottom: 元素下边距离视口上边的距离
+width: 元素宽度
+height: 元素高度
+```
+

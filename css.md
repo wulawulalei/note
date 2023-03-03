@@ -545,3 +545,27 @@ print-color-adjust:exact;
 aspect-ratio: 1 / 1;（宽 / 高）
 ```
 
+
+
+## device-pixel-ratio
+
+```
+@mixin hhh($url) {
+	@media screen and (-webkit-max-device-pixel-ratio: 2), (max-device-pixel-ratio: 2) {
+		background-image: url(#{$url} + '.png');
+	}
+	@media screen and (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+		background-image: url(#{$url} + '@2x.png');
+	}
+	@media screen and (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+		background-image: url(#{$url} + '@3x.png');
+	}
+}
+
+.hhh {
+	width: 300px;
+	height: 300px;
+	@include hhh('/src/assets/logo');
+}
+```
+
