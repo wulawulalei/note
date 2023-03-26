@@ -18,7 +18,7 @@ Number.isNaN判断一个值是否严格等于NaN，会先判断传入的值是�
 
 只要有字符串类型和其他类型拼接，最终结果还是字符串型。
 
-**undefined**in跟**数字**相加，结果为**NaN**；**null**跟**数字**相加，结果为**数字**。
+**undefined**跟**数字**相加，结果为**NaN**；**null**跟**数字**相加，结果为**数字**。
 
 NaN表示的是非数字, 但是这个非数字也是不同的；因此 NaN 不等于 NaN，两个NaN永远不可能相等
 
@@ -37,7 +37,7 @@ undefined表示一个变量声明了但未定义
 1. isNaN(n)
 2. Object.is(a,b)
 3. arr.includes(NaN)
-4. 利用NaN自身不相等的特性判断是不是NaN
+4. 利用NaN自身不相等的特性判断是不是NaN（NaN != NaN）
 
 
 
@@ -155,11 +155,35 @@ JSON.stringify原理：
 
 **Number(String)**转为数值型	(后面跟有字符则为非数字)		String-0/String)*1/String-String
 
-**parseInt(String)**转为**整数**	**parseFloat(String)**转为**浮点数**	(后面跟有字符则去掉字符)
-parseInt方法接收两个参数
-parseInt的第二个参数radix在(2，36)之间时，如果string参数的第一个字符（除空白以外），不属于radix指定进制下的字符，解析结果为NaN，当radix为0时，ECMAScript5将string作为十进制数字的字符串解析。
+**parseInt(String)**转为**整数**
 
-parseInt会将那些会自动转换为科学计数法的数字视为字符串，读到e的时候就不能解析了	(parseInt(0.000005)    //5(5*10-6) )
+parseFloat(String)**转为**浮点数**	( 此函数确定指定字符串中的第一个字符是否为数字（除空白外）。如果是，它会解析字符串直到到达数字的末尾，并将数字作为数字而不是字符串返回。否则返回NaN)
+
+```
+  var a = parseFloat("10")	// 10
+  var b = parseFloat("10.00")	// 10
+  var c = parseFloat("10.33")	// 10.33
+  var d = parseFloat("34 45 66")	// 34
+  var e = parseFloat("   60   ")	// 60
+  var f = parseFloat("40 years")	// 40
+  var g = parseFloat("He was 40")	// 	NaN
+```
+
+
+
+parseInt方法接收两个参数
+
+1. parseInt的第二个参数radix在(2，36)之间时，如果string参数的第一个字符（除空白以外），不属于radix指定进制下的字符，解析结果为NaN，当radix为0时，ECMAScript5将string作为十进制数字的字符串解析。
+2. 当string的数字大于等于radix时，它会解析到string的上一位，如果没有上一位则返回undefined
+
+
+
+js在一下场景会自动将数值转换成科学计数法：
+
+1. 当整数的位数超过22位时（1000000000000000000000 => 1e+21）
+2. 小数点前边是0，小数点后十分位（包含十分位）之后的0的个数超过6个数值就会自动转化成科学计数法（0.0000004 => 4e-7），0.100000004和1.0000004不会被转换
+
+
 
 Number.EPSILON：是JavaScript表示的最小精度
 
@@ -213,7 +237,7 @@ result = (a !== null && a !== undefined) ? a : b;
 
 # 隐式转换
 
--  复杂数据类型在隐式转换时会先转成String，然后再转成Number运算 (对象toString()结果为“[object Object]”)	//.valueOf.()toString()
+-  复杂数据类型在隐式转换时会先转成String，然后再转成Number运算 (对象toString()结果为“[object Object]”)	//.valueOf.()toString()（valueOf获取对象原始值，valueOf为对象再调用toString）
 - 字符串连接符+：会把其他数据类型调用String()方法转成字符串然后拼接
 - 算术运算符+：会把其他数据类型调用Number()方法转成数字然后做加法运算
 -  关系运算符（<、>、<=、>=）：会把其他数据类型转换成number之后再比较关系 
@@ -264,24 +288,6 @@ graph LR;
 - 如果continue、break、return和throw这四个语句后面，直接跟换行符，则会自动添加分号。
 
 立即执行函数前面加上!的原因：将执行!后面的代码，避免上一句表达式没加分号引来的问题
-
-
-
-# 逻辑与短路运算
-
-第一个表达式为真，返回第二个表达式；第一个表达式为假，返回第一个表达式。
-
-
-
-# 逻辑或短路运算
-
-第一个表达式为真，返回第一个表达式；第一个表达式为假，返回第二个表达式。
-
-
-
-# 三元表达式
-
-条件表达式？表达式1：表达式2
 
 
 
@@ -368,8 +374,6 @@ Source Array (src) (源数组)
 
 **String.fromCodePoint(num,……)**  返回使用指定的代码点序列创建的字符串
 
-**str[index]**	获取指定位置处字符		h5支持
-
 **concat()**	连接两个或者多个字符串，返回新字符串，不影响原字符串
 
 **substr(start,length)**	从start位置开始，取length个数
@@ -447,7 +451,7 @@ Source Array (src) (源数组)
   ```
   tag`Hello ${ a + b } world ${ a * b }`;
   // 等同于
-  tag(['Hello ', ' world ', ''], 15, 50);
+  tag(['Hello ', '', ' world ', ''], 15, 50);
   ```
 
   
@@ -1042,7 +1046,7 @@ Promise.race([p1, p2]).then((result) => {
 })
 ```
 
-中断promise链的方法是返回一个pending状态的promise
+中断promise链的方法是返回一个pending状态的promise（return new Promise(() => {})）
 
 
 
@@ -1455,34 +1459,6 @@ btn.onclick=function（）{
 ## requestAnimationFrame
 
 该方法可以在下一帧开始时调用指定函数，将所有DOM操作集中起来，在一次重绘或者回流中完成，并且重绘或者回流的时间间隔紧紧跟随着浏览器的刷新频率。
-
-
-
-# Echars
-
-步骤1：引入echarts.js文件
-步骤2：准备一个呈现图表的盒子
-步骤3：初始化echarts实例对象
-echarts.init(呈现图表的盒子)
-步骤4：准备配置项
-var option={
-//横坐标
-xAxis:{
-type:'category'，
-data:【'小明‘，‘小红’，‘小王】
-}，
-//纵坐标
-yAxis:{
-type:‘value'
-}，
-//数据
-series:【
-name:‘语文’，
-type:'bar'，
-data:【7e，92，，87】
-
-步骤5：将配置项设置给echarts实例对象
-mCharts.setOption(option)
 
 
 

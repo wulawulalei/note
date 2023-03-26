@@ -135,22 +135,28 @@ contain把背景图像扩展至最大尺寸，以便其宽度和高度完全适�
 
 
 
-## BFC
+## BFC（块级格式化上下文）
 
-**概念**：块级格式化上下文，它是指一个独立的块级渲染区域，只有Block-level Box参与，该区域拥有一套渲染规则来约束块级盒子的布局，且与区域外部无关。 它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。 
+定义：一个BFC区域包含创建该上下文元素中的所有子元素，但是不包括子元素中的子元素。BFC是一块独立的渲染区域，不同的BFC区域之间是相互独立的，互不影响的。
 
-**创建BFC的方法**
 
-1. float的值不是none
-2. position的值不是static或者relative
-3. display的值是inline-block、flex或者inline-flex
-4. overflow:hidden（ overflow 除了 visible 以外的值 ）
 
-**BFC其他作用**
+生成BFC的方法：
 
-- BFC可以阻止盒子margin塌陷
+1. 设置浮动，不包括none
+2. 设置定位，包括absolute，fixed
+3. 设置overflow，包括hidden，auto，scroll
+4. 行内快显示模式，即inline-block
+5. 表格单元格，即table-ceil
 
-- BFC可以阻止元素被浮动元素覆盖
+
+
+作用：
+
+1. 解决外边距塌陷问题
+2. 解决包含塌陷（子元素margin影响到父元素）
+3. 清除浮动
+4. 阻止标准流元素被浮动元素覆盖
 
 
 
