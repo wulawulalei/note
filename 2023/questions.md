@@ -27,7 +27,7 @@
 
 ## 图片懒加载
 
-
+<img src="" loading="lazy">
 
 
 
@@ -61,3 +61,11 @@
 ## 删除cookie
 
 将cookie的过期时间调整到当前时间之前
+
+
+
+## options在什么情况下出现
+
+1. 跨域的时候
+2. 自定义头部
+3. 请求头的content-type参数：application/x-www-urlencoded、multipart/form-data、text/plain之外的格式
