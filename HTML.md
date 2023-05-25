@@ -4,6 +4,12 @@
 
 
 
+## document和document.documentElement区别
+
+document是文档对象，document.documentElement是文档的根节点
+
+
+
 ## 语义化
 
 ​	Web语义化是指使用恰当语义的html标签、class类名等内容，让页面具有良好的结构与含义，从而让人和机器

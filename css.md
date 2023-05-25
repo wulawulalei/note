@@ -552,6 +552,12 @@ print-color-adjust:exact;
 
 
 
+## 文字环绕
+
+shape-outside
+
+
+
 ## 设置宽高比
 
 ```

@@ -155,7 +155,7 @@ JSON.stringify原理：
 
 **Number(String)**转为数值型	(后面跟有字符则为非数字)		String-0/String)*1/String-String
 
-**parseInt(String)**转为**整数**
+**parseInt(String)**转为**整数**（把一个n进制的数转换成十进制的数）
 
 parseFloat(String)**转为**浮点数**	( 此函数确定指定字符串中的第一个字符是否为数字（除空白外）。如果是，它会解析字符串直到到达数字的末尾，并将数字作为数字而不是字符串返回。否则返回NaN)
 
@@ -174,7 +174,7 @@ parseFloat(String)**转为**浮点数**	( 此函数确定指定字符串中的�
 parseInt方法接收两个参数
 
 1. parseInt的第二个参数radix在(2，36)之间时，如果string参数的第一个字符（除空白以外），不属于radix指定进制下的字符，解析结果为NaN，当radix为0时，ECMAScript5将string作为十进制数字的字符串解析。
-2. 当string的数字大于等于radix时，它会解析到string的上一位，如果没有上一位则返回undefined
+2. 当string的数字大于等于radix时，它会解析到string的上一位，并且不再继续解析下一位，如果没有上一位则返回NaN
 
 
 
@@ -1240,7 +1240,7 @@ let、const声明的变量会提升到块的顶部
 2. 若函数体只有一句代码且为函数返回值，函数体大括号可以省略
 3. 如果直接返回一个对象，必须在对象外面加上括号
 4. 若形参只有一个，形参外侧的小括号可以去掉
-5. 箭头函数不绑定this，箭头函数中的this指向定义时所处的对象
+5. 箭头函数不绑定this，箭头函数中的this指向函数所在的作用域指向的对象
 6.  箭头函数中的this只在定义的时候绑定，任何方法都改不了箭头函数的this，包括(call、bind、apply)
 
 
