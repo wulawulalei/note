@@ -617,3 +617,8 @@ A的 flex-shrink 为 0，B的 flex-shrink 为 1，则A不减小宽度，B减小
 如果A，B都减小宽度，A设置 flex-shirk 为 3，B设置 flex-shirk 为 2。则最终 A 的大小为 自身宽度 (200px) - A减小的宽度(100px * (200px * 3 / (200px * 3 + 300px * 2))) = 150px
 最终 B 的大小为 自身宽度 (300px)- B减小的宽度 (100px * (300px * 2/(200px* 3 + 300px* 2))) = 250px
 ```
+
+flex: none => flex: 0 0 auto;
+flex: auto => flex: 1 1 auto;
+flex: 1 => flex: 1 1 0%;
+flex默认的是flex: 0 1 auto;
