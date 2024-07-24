@@ -626,3 +626,24 @@ flex默认的是flex: 0 1 auto;
 **flex: 1时为啥需要添加width: 0**
 如果没有设置width,当内部元素的内容大小超过平均分配的剩余空间时,元素的宽度等于内容大小,如果设置了width并且这个width的大小小于平均分配的剩余空间大小时,取平均分配的剩余空间;
 确保元素在Flexbox布局中从零宽度开始，并且完全依赖于Flexbox属性分配空间。
+
+
+## :where/:is
+**is**: 匹配列表中任意一个选择器可以选择的元素。
+```
+/* before */
+header p:hover,
+main p:hover,
+footer p:hover {
+  color: red;
+  cursor: pointer;
+}
+
+/* after, same as before */
+:is(header, main, footer) p:hover {
+  color: red;
+  cursor: pointer;
+}
+```
+**where**: 跟is类似，不同于is的是where的优先级是0
+
