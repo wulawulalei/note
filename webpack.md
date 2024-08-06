@@ -144,3 +144,10 @@ webpack后动后，从entry开始，递归解析entry依赖的所有module，找
 8. 根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 Chunk
 9. 再把每个 Chunk 转换成一个单独的文件加入到输出列表
 10. 在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统
+
+
+## tapable
+1. basichook：顺序执行每一个事件
+2. bailhook：顺序执行每一个事件，倘若有事件返回值!==undefined时，不再继续执行
+3. waterfailhook：前一个事件结果不为undefined时，result作为下一个事件的参数，类似于reduce
+4. loophook：顺序执行每一个事件，如果结果不为undefined，则返回到第一个事件重新顺序执行，直到所有结果都为undefined
